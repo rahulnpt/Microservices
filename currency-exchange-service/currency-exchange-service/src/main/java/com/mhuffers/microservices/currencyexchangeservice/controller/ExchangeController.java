@@ -2,6 +2,8 @@ package com.mhuffers.microservices.currencyexchangeservice.controller;
 
 import java.math.BigDecimal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ public class ExchangeController {
 	@Autowired
 	private ExchangeValueRepository exchangeValueRepository;
 	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	//hardcoded response
 	/*@GetMapping("currency-exchange/from/{from}/to/{to}")
 	public ExchangeValue retriveExchangeValues(@PathVariable String from,@PathVariable String to){
@@ -31,6 +34,9 @@ public class ExchangeController {
 	public ExchangeValue retriveExchangeValues(@PathVariable String from,@PathVariable String to){
 		ExchangeValue exchangeValue = exchangeValueRepository.findByFromAndTo(from, to);
 		exchangeValue.setPort(Integer.parseInt(env.getProperty("local.server.port")));
+		
+		logger.info("Logging from ExchangeController {}",exchangeValue);
+		
 		return exchangeValue;
 	}
 }
